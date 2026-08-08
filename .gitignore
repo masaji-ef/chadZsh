@@ -1,0 +1,8 @@
+*.swp
+*.swo
+*~
+*.bak
+*.bak.*
+local.properties
+.idea/
+.vscode/
