@@ -1,11 +1,17 @@
+# Set cursor to blinking block
+echo -ne "\e[2 q"
+
+# Remove duplicate path entries
 typeset -U path
 
+# Add directories to PATH if they exist
 add_path() {
     for p in "$@"; do
         [[ -d "$p" ]] && path=("$p" $path)
     done
 }
 
+# Common binary directories
 add_path \
     "$HOME/.local/bin" \
     "$HOME/bin" \
@@ -18,4 +24,5 @@ add_path \
 
 export PATH
 
-export CDPATH=".:~:/var/log:/etc:/usr/local/etc:/opt:/mnt:/srv"
+# CDPATH for cd command - current and home only
+export CDPATH=".:~"

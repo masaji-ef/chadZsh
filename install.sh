@@ -211,17 +211,6 @@ if [[ -L ~/.zsh.d ]]; then
     fi
 fi
 
-if [[ ! -f "$SCRIPT_DIR/zsh.d/16-personal.zsh" ]]; then
-    cat > "$SCRIPT_DIR/zsh.d/16-personal.zsh" <<'EOF'
-alias docs='cd ~/Documents'
-alias down='cd ~/Downloads'
-alias projects='cd ~/projects'
-alias tmp='cd /tmp'
-alias dl='cd ~/Downloads'
-
-EOF
-    echo -e "${GREEN}✅ Created 16-personal.zsh in repository${NC}"
-fi
 
 if [[ -f ~/.zsh.d/16-personal.zsh ]] && [[ ! -L ~/.zsh.d/16-personal.zsh ]]; then
     echo -e "${YELLOW}⚠️ Removing duplicate 16-personal.zsh from ~/.zsh.d${NC}"
@@ -281,3 +270,10 @@ echo -e "   ${CYAN}git --version${NC} — should show Git version"
 echo -e "   ${CYAN}docker ps${NC} — should work (podman alias if docker not installed)"
 echo ""
 echo -e "${BOLD}${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+if [[ ! -f "$SCRIPT_DIR/zsh.d/16-personal.zsh" ]]; then
+    cat > "$SCRIPT_DIR/zsh.d/16-personal.zsh" <<'EOF2'
+# Personal aliases and settings
+# Add your custom configurations here
+EOF2
+    echo -e "${GREEN}✅ Created empty 16-personal.zsh in repository${NC}"
+fi
