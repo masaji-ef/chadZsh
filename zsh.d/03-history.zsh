@@ -4,15 +4,15 @@ SAVEHIST=100000
 HISTFILE=~/.zsh_history
 
 # History options
-setopt HIST_IGNORE_ALL_DUPS      # Remove duplicates
-setopt HIST_IGNORE_SPACE         # Ignore commands with space
-setopt HIST_REDUCE_BLANKS        # Remove extra blanks
-setopt HIST_VERIFY               # Show command before running
-setopt INC_APPEND_HISTORY        # Add immediately
-setopt SHARE_HISTORY             # Share between sessions
-setopt EXTENDED_HISTORY          # Add timestamps
-setopt HIST_SAVE_NO_DUPS         # Don't save duplicates
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicates first
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
 
 # Set history file permissions
 if [[ -f "$HISTFILE" ]]; then
@@ -22,14 +22,13 @@ if [[ -f "$HISTFILE" ]]; then
     fi
 fi
 
-# FZF history search widget
+# FZF history search widget (no colors)
 if command -v fzf &>/dev/null; then
     fzf_history_widget() {
-        local selected num
+        local selected
         setopt localoptions noglobsubst noposixbuiltins pipefail 2>/dev/null
 
-        # Search history, remove duplicates
-        selected=$(fc -l 1 2>/dev/null | \
+        selected=$(fc -l -n -1 0 2>/dev/null | \
             awk '!seen[$0]++' | \
             fzf \
                 --tac \
@@ -41,20 +40,14 @@ if command -v fzf &>/dev/null; then
                 --border \
                 --prompt="History> " \
                 --pointer="▶ " \
-                --preview='echo {2..}' \
-                --preview-window='down:3:wrap' \
                 --bind='tab:down,shift-tab:up' \
                 --bind='ctrl-r:toggle-sort' \
-                --bind='ctrl-y:execute(echo -n {2..} | wl-copy 2>/dev/null || echo -n {2..} | xclip -selection clipboard 2>/dev/null)' \
                 2>/dev/null)
 
-        # Insert selected command
         if [[ -n "$selected" ]]; then
-            num=$(echo "$selected" | awk '{print $1}')
-            if [[ -n "$num" ]]; then
-                LBUFFER=$(fc -l $num $num 2>/dev/null | sed 's/^[ ]*[0-9]*[ ]*//')
-                zle redisplay
-            fi
+            LBUFFER="$selected"
+            zle end-of-line
+            zle redisplay
         fi
         zle reset-prompt
     }
@@ -62,36 +55,32 @@ if command -v fzf &>/dev/null; then
     zle -N fzf_history_widget
     bindkey '^R' fzf_history_widget
 
-    # Show all history with fzf
+    # Show all history
     fzf_history_all() {
-        fc -l 1 2>/dev/null | \
+        local selected
+        selected=$(fc -l -n -1 0 2>/dev/null | \
             awk '!seen[$0]++' | \
-            fzf --tac --no-sort --exact \
+            fzf \
+                --tac \
+                --no-sort \
+                --exact \
                 --height=60% \
                 --reverse \
                 --border \
                 --prompt="All history> " \
-                --preview='echo {2..}' \
-                --preview-window='down:3:wrap' \
                 --bind='tab:down,shift-tab:up' \
-                --bind='ctrl-r:reload(fc -l 1 | awk "!seen[\$0]++" | tac)' \
-                --bind='ctrl-y:execute(echo -n {2..} | wl-copy 2>/dev/null || echo -n {2..} | xclip -selection clipboard 2>/dev/null)' \
-                2>/dev/null
+                --bind='ctrl-r:reload(fc -l -n -1 0 | awk "!seen[\$0]++" | tac)' \
+                2>/dev/null)
+
+        if [[ -n "$selected" ]]; then
+            LBUFFER="$selected"
+            zle end-of-line
+            zle redisplay
+        fi
+        zle reset-prompt
     }
 
-    # Search history by date
-    fzf_history_date() {
-        local date_pattern=$(date '+%Y-%m-%d')
-        fc -l 1 2>/dev/null | grep "$date_pattern" | \
-            fzf --tac --no-sort \
-                --height=40% \
-                --reverse \
-                --border \
-                --prompt="History for $date_pattern> " \
-                2>/dev/null
-    }
-
-    # Clear history with confirmation
+    # Clear history
     fzf_history_clear() {
         echo -n "Clear history? (y/N) "
         read -r answer
@@ -104,10 +93,9 @@ if command -v fzf &>/dev/null; then
         fi
     }
 
-    # History aliases
+    # Aliases
     alias fh='fzf_history_widget'
     alias fha='fzf_history_all'
-    alias fhd='fzf_history_date'
     alias fhc='fzf_history_clear'
 fi
 

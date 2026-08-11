@@ -9,7 +9,6 @@ if command -v rg &>/dev/null; then
     alias rg='rg'
 fi
 
-
 # eza - better ls
 if command -v eza &>/dev/null; then
     alias ls='eza -l -a --group-directories-first --icons --git --time=modified --time-style=long-iso --no-permissions --no-filesize -s=name -g'
@@ -21,7 +20,7 @@ if command -v zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
-# fzf configuration
+# fzf configuration (no colors)
 if command -v fzf &>/dev/null; then
     export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git 2>/dev/null || find . -type f 2>/dev/null'
     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -33,25 +32,25 @@ if command -v fzf &>/dev/null; then
         --border
         --inline-info
         --prompt "❯ "
-        --pointer "▶"
-        --marker "✓"
-        --color "fg:0,fg+:7,bg:0,bg+:8,hl:1,hl+:3,info:2,prompt:2,pointer:3,marker:4,spinner:5"
+        --pointer "▶ "
+        --marker "✓ "
     '
 
     export FZF_CTRL_R_OPTS="
-        --preview 'echo {}'
-        --preview-window down:3:wrap
+        --height 40%
+        --reverse
+        --border
+        --prompt 'History> '
+        --pointer '▶ '
         --no-sort
         --exact
         --tiebreak=index
     "
 
-    # Find files with preview
     fzf_find() {
         fd --type f 2>/dev/null | fzf --height 40% --reverse --preview 'bat --style=header,grid,numbers,changes --color=always {} 2>/dev/null || head -50 {}'
     }
 
-    # Cd with fzf
     fzf_cd() {
         cd "$(fd --type d 2>/dev/null | fzf --height 40% --reverse)" 2>/dev/null
     }
@@ -101,12 +100,12 @@ if command -v aria2c &>/dev/null; then
     alias get='aria2c -x 16 -s 16 --console-log-level=error'
 fi
 
-# docker -> podman fallback
+# docker -> podman
 if ! command -v docker &>/dev/null && command -v podman &>/dev/null; then
     alias docker='podman'
 fi
 
-# Yazi file manager widget
+# Yazi widget
 yazi_widget() {
     local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
     yazi --cwd-file="$tmp"
