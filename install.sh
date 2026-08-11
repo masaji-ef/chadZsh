@@ -211,10 +211,6 @@ if [[ -L ~/.zsh.d ]]; then
     fi
 fi
 
-if [[ -f ~/.zsh.d/16-personal.zsh ]] && [[ ! -L ~/.zsh.d/16-personal.zsh ]]; then
-    echo -e "${YELLOW}⚠️ Removing duplicate 16-personal.zsh from ~/.zsh.d${NC}"
-    rm -f ~/.zsh.d/16-personal.zsh
-fi
 
 grep -q "source ~/.zshrc" ~/.zprofile 2>/dev/null || echo 'source ~/.zshrc' >> ~/.zprofile
 
