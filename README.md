@@ -77,10 +77,10 @@ source ~/.zshrc
 
 ### What gets installed
 
-| Category  | Packages                                                                               |
-| --------- | -------------------------------------------------------------------------------------- |
-| **Base**  | `zsh`, `curl`, `wget`, `git`, `vim`, `tmux`, `ncdu`, `jq`, `less`                      |
-| **Tools** | `btop`, `ripgrep`, `fd-find`, `bat`, `eza`, `fzf`, `zoxide`, `direnv`, `aria2`, `yazi` |
+| Category  | Packages                                                                     |
+| --------- | ---------------------------------------------------------------------------- |
+| **Base**  | `zsh`, `curl`, `wget`, `git`, `vim`, `tmux`, `ncdu`, `jq`, `less`            |
+| **Tools** | `btop`, `ripgrep`, `fd-find`, `bat`, `eza`, `fzf`, `zoxide`, `aria2`, `yazi` |
 
 ---
 

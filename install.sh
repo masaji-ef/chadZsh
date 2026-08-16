@@ -133,7 +133,7 @@ else
     echo -e "${BOLD}${CYAN}📦 Package Selection${NC}"
     echo ""
     echo -e "${BOLD}${GREEN}Base packages:${NC} zsh, curl, wget, git, vim, tmux, ncdu, jq, less, podman, docker, docker-compose, containerd"
-    echo -e "${BOLD}${GREEN}Tools:${NC} btop, ripgrep, fd-find, bat, eza, fzf, zoxide, direnv, aria2, yazi"
+    echo -e "${BOLD}${GREEN}Tools:${NC} btop, ripgrep, fd-find, bat, eza, fzf, zoxide, aria2, yazi"
     echo ""
 
     read -p "Install base packages? [Y/n] " -r
@@ -163,18 +163,18 @@ else
     fi
     echo ""
 
-    read -p "Install tools (btop, ripgrep, fd, bat, eza, fzf, zoxide, direnv, aria2, yazi)? [Y/n] " -r
+    read -p "Install tools (btop, ripgrep, fd, bat, eza, fzf, zoxide, aria2, yazi)? [Y/n] " -r
     if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
-        TOOLS_PKGS=(btop ripgrep fd-find bat eza fzf zoxide direnv aria2)
+        TOOLS_PKGS=(btop ripgrep fd-find bat eza fzf zoxide aria2)
         case $OS in
             macos|alpine|arch|manjaro|endeavouros)
-                TOOLS_PKGS=(btop ripgrep fd bat eza fzf zoxide direnv aria2)
+                TOOLS_PKGS=(btop ripgrep fd bat eza fzf zoxide aria2)
                 ;;
             debian|ubuntu|pop|linuxmint|elementary)
-                TOOLS_PKGS=(btop ripgrep fd-find bat eza fzf zoxide direnv aria2)
+                TOOLS_PKGS=(btop ripgrep fd-find bat eza fzf zoxide aria2)
                 ;;
             fedora|rhel|centos|rocky|almalinux|ol)
-                TOOLS_PKGS=(btop ripgrep fd-find bat eza fzf zoxide direnv aria2)
+                TOOLS_PKGS=(btop ripgrep fd-find bat eza fzf zoxide aria2)
                 ;;
         esac
         TOOLS_PKGS+=(yazi)
@@ -230,7 +230,7 @@ fi
 
 echo ""
 echo -e "${BOLD}${CYAN}🔍 Installed Tools${NC}"
-for tool in bat eza fzf fd rg btop zoxide ncdu tmux jq direnv aria2c yazi vim podman docker git; do
+for tool in bat eza fzf fd rg btop zoxide ncdu tmux jq aria2c yazi vim podman docker git; do
     case $tool in
         fd)
             if command -v fd &>/dev/null || command -v fdfind &>/dev/null; then
