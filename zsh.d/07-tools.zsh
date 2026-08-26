@@ -123,9 +123,17 @@ git_widget() {
   local commit_msg
   echo -n "Commit message: "
   read -r commit_msg </dev/tty
-  if [[ -n $commit_msg ]]; then
-    git add -A && git commit -m "$commit_msg" && git push
+
+  if [[ -z $commit_msg ]]; then
+    echo "Commit cancelled: empty message"
+  else
+    if git add -A && git commit -m "$commit_msg" && git push; then
+      echo "✅ Commit successful"
+    else
+      echo "❌ Commit failed"
+    fi
   fi
+
   zle reset-prompt
 }
 zle -N git_widget
